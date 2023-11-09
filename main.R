@@ -9,7 +9,6 @@
 path='/Users/vickihurd/Documents/GitHub/UltrasoundSkillRetention'
 setwd(path)
 # Source library folder
-# source('./lib/')
 files.sources = list.files('./lib/')
 files.sources = paste('./lib/', files.sources, sep = "")
 sapply(files.sources, source)
@@ -29,7 +28,6 @@ dfSurveys = cleanSurveys()
 
 # ---------------------------------------------------------------
 # ORGAN ACQUISITION RATE ANALYSIS & VIZ
-# Displays all 
 
 # ---------------------------------------------------------------
 # IMAGE QUALITY ANALYSIS & VIZ
