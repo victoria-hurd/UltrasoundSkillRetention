@@ -1,12 +1,19 @@
 # AUTHOR:       Victoria Hurd
-# DATE CREATED: 8/02/23
-# LAST EDITED:  11/1/23
-# PROJECT:      ButterflAI Ultrasound Study
-# TASK:         Data Analysis - Wrong Organ Analysis
-
+# DATE CREATED: 11/09/23
+# LAST EDITED:  11/09/23
+# PROJECT:      POCUS Skill Retention Study
+# TASK:         Main script for cleaning, statistical analysis, and viz
+# ---------------------------------------------------------------
 ### ADMIN ###
-path='/Users/vickihurd/Documents/Research/Astrosonography/Skill Retention Study/Code'
+# Sets repo path
+path='/Users/vickihurd/Documents/GitHub/UltrasoundSkillRetention'
 setwd(path)
+# Source library folder
+# source('./lib/')
+files.sources = list.files('./lib/')
+files.sources = paste('./lib/', files.sources, sep = "")
+sapply(files.sources, source)
+# Read in all pertinent libraries
 library(readxl)
 library(ggplot2)
 library(dplyr)
@@ -14,3 +21,21 @@ library(stringr)
 library(tidyverse)
 
 # ---------------------------------------------------------------
+# CLEANING SCRIPT
+# Reads in all datafiles. Outputs dfB, dfK, and dfSurveys
+dfB = cleanBladder()
+dfK = cleanKidney()
+dfSurveys = cleanSurveys()
+
+# ---------------------------------------------------------------
+# ORGAN ACQUISITION RATE ANALYSIS & VIZ
+# Displays all 
+
+# ---------------------------------------------------------------
+# IMAGE QUALITY ANALYSIS & VIZ
+
+# ---------------------------------------------------------------
+# DIAGNOSTICS ANALYSIS & VIZ
+
+# ---------------------------------------------------------------
+# SURVEYS ANALYSIS & VIZ
