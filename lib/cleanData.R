@@ -9,57 +9,96 @@ cleanBladder <- function() {
   # Read in datafiles
   dfai <- read_excel("./data/BladderAI Task Data - Rescored, unclean.xlsx")
   dfman <- read_excel("./data/BladderMan Task Data - Rescored, unclean.xlsx")
-  dfBAIWO <- read_excel("./data/Wrong Organ Analysis - BladderAI.xlsx")
-  dfBManWO <- read_excel("./data/Wrong Organ Analysis - BladderMan.xlsx")
+  dfaiWO <- read_excel("./data/Wrong Organ Analysis - BladderAI.xlsx")
+  dfmanWO <- read_excel("./data/Wrong Organ Analysis - BladderMan.xlsx")
+  # session 1 volumes
+  t1.pluto.1 <- read_excel("./Data/Session1_worksheets.xlsx", sheet = "Pluto1")
+  t1.titan.1 <- read_excel("./Data/Session1_worksheets.xlsx", sheet = "Titan1")
+  t1.mars.1 <- read_excel("./Data/Session1_worksheets.xlsx", sheet = "Mars1")
+  t1.earth.1 <- read_excel("./Data/Session1_worksheets.xlsx", sheet = "Earth1")
+  t1.venus.1 <- read_excel("./Data/Session1_worksheets.xlsx", sheet = "Venus1")
+  t1.mars.2 <- read_excel("./Data/Session1_worksheets.xlsx", sheet = "Mars2")
+  t1.virgo.2 <- read_excel("./Data/Session1_worksheets.xlsx", sheet = "Virgo2")
+  t1.hydra.2 <- read_excel("./Data/Session1_worksheets.xlsx", sheet = "Hydra2")
+  t1.aries.2 <- read_excel("./Data/Session1_worksheets.xlsx", sheet = "Aries2")
+  t1.io.2 <- read_excel("./Data/Session1_worksheets.xlsx", sheet = "Io2")
+  # session 2 volumes
+  t2.ursa.1 <- read_excel("./Data/Session2_worksheets.xlsx", sheet = "Ursa1")
+  t2.sun.1 <- read_excel("./Data/Session2_worksheets.xlsx", sheet = "Sun1")
+  t2.pluto.1 <- read_excel("./Data/Session2_worksheets.xlsx", sheet = "Pluto1")
+  t2.draco.1 <- read_excel("./Data/Session2_worksheets.xlsx", sheet = "Draco1")
+  t2.titan.1 <- read_excel("./Data/Session2_worksheets.xlsx", sheet = "Titan1")
+  t2.leo.2 <- read_excel("./Data/Session2_worksheets.xlsx", sheet = "Leo2")
+  t2.orion.2 <- read_excel("./Data/Session2_worksheets.xlsx", sheet = "Orion2")
+  t2.libra.2 <- read_excel("./Data/Session2_worksheets.xlsx", sheet = "Libra2")
+  t2.ursa.2 <- read_excel("./Data/Session2_worksheets.xlsx", sheet = "Ursa2")
+  t2.moon.2 <- read_excel("./Data/Session2_worksheets.xlsx", sheet = "Moon2")
+  # session 3 volumes 
+  t3.ursa.1 <- read_excel("./Data/Session3_worksheets.xlsx", sheet = "Ursa1")
+  t3.sun.1 <- read_excel("./Data/Session3_worksheets.xlsx", sheet = "Sun1")
+  t3.mars.1 <- read_excel("./Data/Session3_worksheets.xlsx", sheet = "Mars1")
+  t3.draco.1 <- read_excel("./Data/Session3_worksheets.xlsx", sheet = "Draco1")
+  t3.dune.1 <- read_excel("./Data/Session3_worksheets.xlsx", sheet = "Dune1")
+  t3.sun.2 <- read_excel("./Data/Session3_worksheets.xlsx", sheet = "Sun2")
+  t3.orion.2 <- read_excel("./Data/Session3_worksheets.xlsx", sheet = "Orion2")
+  t3.titan.2 <- read_excel("./Data/Session3_worksheets.xlsx", sheet = "Titan2")
+  t3.hoth.2 <- read_excel("./Data/Session3_worksheets.xlsx", sheet = "Hoth2")
+  t3.dune.2 <- read_excel("./Data/Session3_worksheets.xlsx", sheet = "Dune2")
+  t3.cetus.3 <- read_excel("./Data/Session3_worksheets.xlsx", sheet = "Cetus3")
+  t3.lyra.3 <- read_excel("./Data/Session3_worksheets.xlsx", sheet = "Lyra3")
+  t3.canis.3 <- read_excel("./Data/Session3_worksheets.xlsx", sheet = "Canis3")
+  t3.ursa.3 <- read_excel("./Data/Session3_worksheets.xlsx", sheet = "Ursa3")
+  t3.lepus.3 <- read_excel("./Data/Session3_worksheets.xlsx", sheet = "Lepus3")
+  
   # Cleaning
   # Wrong Organ DF for BAI - Replace label names, split into independent variable 
   # groups, remove unnecessary columns
-  names(dfBAIWO) <- c("Label","URL","Date","Mean_Score","Notes")
+  names(dfaiWO) <- c("Label","URL","Date","Mean_Score","Notes")
   # Keep certain columns
-  dfBAIWO = subset(dfBAIWO, select = c(Label, Date))
+  dfaiWO = subset(dfaiWO, select = c(Label, Date))
   # Remove gold standard measurements
-  (dfBAIWO <-subset(dfBAIWO, grepl("Gold",dfBAIWO$Label)==FALSE))
-  # Add column for Exp_Group  - all in dfBAIWO will be 1
-  dfBAIWO[, 'Exp_Group'] = 1
+  dfaiWO <-subset(dfaiWO, grepl("Gold",dfaiWO$Label)==FALSE)
+  # Add column for Exp_Group  - all in dfaiWO will be 1
+  dfaiWO[, 'Exp_Group'] = 1
   # Add column for wrong organs - all values will be 1 since incorrect
-  dfBAIWO[, 'Wrong_Organ'] = 1
+  dfaiWO[, 'Wrong_Organ'] = 1
   # Wrong Organ DF for BMan - Replace label names, split into independent variable 
   # groups, remove unnecessary columns
-  names(dfBManWO) <- c("Label","Label2","Timepoint","Exp_Group","Subject","SP",
+  names(dfmanWO) <- c("Label","Label2","Timepoint","Exp_Group","Subject","SP",
                        "Q1","Q2","AnonLabel","URL","Mean_Score","Wrong_Organ")
   # Keep certain columns
-  dfBManWO = subset(dfBManWO, select = c(Label, Timepoint, Wrong_Organ))
+  dfmanWO = subset(dfmanWO, select = c(Label, Timepoint, Wrong_Organ))
   # Remove gold standard measurements
-  (dfBManWO <-subset(dfBManWO, grepl("Gold",dfBManWO$Label)==FALSE))
-  # Add column for Exp_Group  - all in dfBManWO will be 0
-  dfBManWO[, 'Exp_Group'] = 0
+  dfmanWO <-subset(dfmanWO, grepl("Gold",dfmanWO$Label)==FALSE)
+  # Add column for Exp_Group  - all in dfmanWO will be 0
+  dfmanWO[, 'Exp_Group'] = 0
   # Subset where wrong organ is true
-  (dfBManWO <-subset(dfBManWO, dfBManWO$Wrong_Organ==TRUE))
+  dfmanWO <-subset(dfmanWO, dfmanWO$Wrong_Organ==TRUE)
   # Add column for wrong organs - all values will be 1 since incorrect
-  dfBManWO[, 'Wrong_Organ'] = 1
+  dfmanWO[, 'Wrong_Organ'] = 1
   # Convert data to time object
-  dfBAIWO[['Date']] <- as.POSIXct(dfBAIWO[['Date']],
+  dfaiWO[['Date']] <- as.POSIXct(dfaiWO[['Date']],
                                 format = "%Y-%m-%dT%H:%M:%S")
-  dfBAIWO$Date <- as.Date(dfBAIWO$Date)
-  class(dfBAIWO$Date)
-  temp1 <- dfBAIWO[dfBAIWO$Date > "2023-02-01" &    # Extract data frame subset
-                     dfBAIWO$Date < "2023-02-11", ]
+  dfaiWO$Date <- as.Date(dfaiWO$Date)
+  class(dfaiWO$Date)
+  temp1 <- dfaiWO[dfaiWO$Date > "2023-02-01" &    # Extract data frame subset
+                     dfaiWO$Date < "2023-02-11", ]
   temp1 <- cbind(temp1[,1:2],rep('T1',nrow(temp1)), temp1[,3:ncol(temp1)])
   names(temp1)[3] <- "Timepoint"
-  temp2 <- dfBAIWO[dfBAIWO$Date > "2023-02-15" &    # Extract data frame subset
-                     dfBAIWO$Date < "2023-02-25", ]
+  temp2 <- dfaiWO[dfaiWO$Date > "2023-02-15" &    # Extract data frame subset
+                     dfaiWO$Date < "2023-02-25", ]
   temp2 <- cbind(temp2[,1:2],rep('T2',nrow(temp2)), temp2[,3:ncol(temp2)])
   names(temp2)[3] <- "Timepoint"
-  temp3 <- dfBAIWO[dfBAIWO$Date > "2023-02-25" &    # Extract data frame subset
-                     dfBAIWO$Date < "2023-04-25", ]
+  temp3 <- dfaiWO[dfaiWO$Date > "2023-02-25" &    # Extract data frame subset
+                     dfaiWO$Date < "2023-04-25", ]
   temp3 <- cbind(temp3[,1:2],rep('T3',nrow(temp3)), temp3[,3:ncol(temp3)])
   names(temp3)[3] <- "Timepoint"
   # rebind
-  dfBAIWO <- rbind(temp1,temp2,temp3)
+  dfaiWO <- rbind(temp1,temp2,temp3)
   # Remove date
-  dfBAIWO = subset(dfBAIWO, select = -c(Date))
+  dfaiWO = subset(dfaiWO, select = -c(Date))
   # Concatenate into one wrong organ df
-  dfWO = rbind(dfBManWO,dfBAIWO)
+  dfWO = rbind(dfmanWO,dfaiWO)
   
   # MANUAL DATA
   # Rename columns
@@ -78,7 +117,7 @@ cleanBladder <- function() {
   apply(is.na(dfman), 2, which)
   ind = apply(is.na(dfman), 2, which)
   ind = ind[["Q6"]]
-  (ind = ind[1]) # row we're adding the 0 to
+  ind = ind[1] # row we're adding the 0 to
   dfman$Q6[ind] <- 0
   ind <- apply(is.na(dfman), 2, which) 
   ind = ind[["Q6"]]
@@ -111,23 +150,20 @@ cleanBladder <- function() {
   names(temp3)[3] <- "Timepoint"
   # rebind
   dfman <- rbind(temp1,temp2,temp3)
-  
   # Make scores numeric - Q1 is type char rn
   str(dfman)
   dfman$Q1 <- as.numeric(dfman$Q1)
   str(dfman)
-  
   # Sum question scores
   # calculate the mean per image - rescored
   dfman = dfman[order(dfman$Label),]
-  hist(dfman$Mean_Score)
   # renumber
   row.names(dfman) <- 1:nrow(dfman)
   # length of unique names - 
   # An issue here - there are duplicate labels per timepoint...
   # To overcome this, append the timepoint value to the label
   dfman$Label = paste(dfman$Label,dfman$Timepoint)
-  (length(unique(dfman$Label)))
+  length(unique(dfman$Label))
   # Remove date
   dfman = subset(dfman, select = -c(Date))
   # allocate space
@@ -220,14 +256,13 @@ cleanBladder <- function() {
   # Sum question scores
   # calculate the mean per image - rescored
   dfai = dfai[order(dfai$Label),]
-  hist(dfai$Mean_Score)
   # renumber
   row.names(dfai) <- 1:nrow(dfai)
   # length of unique names
   # An issue here - there are duplicate labels per timepoint...
   # To overcome this, append the timepoint value to the label
   dfai$Label = paste(dfai$Label,dfai$Timepoint)
-  (length(unique(dfai$Label)))
+  length(unique(dfai$Label))
   # Remove date
   dfai = subset(dfai, select = -c(Date))
   # allocate space
@@ -243,8 +278,287 @@ cleanBladder <- function() {
     }
   }
   dfai <- dfavgb
+  # Concatenate dfai and dfman - first need to match DF number of fields
+  # Apply round down method to Q1-3
+  #dfai$Q1 <- floor(dfai$Q1)
+  #dfai$Q2 <- floor(dfai$Q2)
+  # Average AI questions Q1 and Q2
+  dfai$Quality <- floor(rowMeans(cbind(dfai$Q1,dfai$Q2)))
+  # Average and round down combination of Q2 and Q3 for manual
+  dfman$Quality <- floor(rowMeans(cbind(dfman$Q1,dfman$Q2,dfman$Q3)))
+  # Rearrange
+  dfai <- select(dfai,Label,Exp_Group,Timepoint,Subject,SP,Quality,URL)
+  dfman <- select(dfman,Label,Exp_Group,Timepoint,Subject,SP,Quality,URL)
+  # Combine data
+  df <- rbind(dfai,dfman)
+  # Tabulate quality by Exp Group
+  table(df$Exp_Group,df$Quality)
+  # Tabulate quality by Timepoint
+  table(df$Timepoint,df$Quality)
   
-  df <- data.frame()
+  # WRONG ORGANS
+  # Find if label from df exists within dfWO
+  # An issue here - there are duplicate labels per timepoint...
+  # To overcome this, append the timepoint value to the label
+  dfWO$Label = paste(dfWO$Label,dfWO$Timepoint)
+  # Mark df(i) Wrong Organ column with a 1
+  df$Wrong_Organ <- df$Label %in% c(dfWO$Label)
+  # Rearrange
+  df <- select(df,Label,Exp_Group,Timepoint,Subject,SP,Quality,Wrong_Organ,URL)
+  # Tabulate to check. There should be 79 true
+  table(df$Wrong_Organ)
+  # Display some prelim results
+  table(df$Exp_Group,df$Wrong_Organ)
+  table(df$Timepoint,df$Wrong_Organ)
+
+  # BLADDER VOLUMES
+  # DATA APPENDING
+  # Session 1
+  filenames = c("t1.pluto.1","t1.titan.1","t1.mars.1","t1.venus.1","t1.earth.1",
+                "t1.mars.2","t1.virgo.2","t1.hydra.2","t1.aries.2","t1.io.2")
+  # Append column for SP name
+  t1.pluto.1 <- cbind(t1.pluto.1[,1],rep('Pluto',nrow(t1.pluto.1)),
+                      t1.pluto.1[,2:ncol(t1.pluto.1)])
+  t1.titan.1 <- cbind(t1.titan.1[,1],rep('Titan',nrow(t1.titan.1)),
+                      t1.titan.1[,2:ncol(t1.titan.1)])
+  t1.mars.1 <- cbind(t1.mars.1[,1],rep('Mars',nrow(t1.mars.1)),
+                     t1.mars.1[,2:ncol(t1.mars.1)])
+  t1.venus.1 <- cbind(t1.venus.1[,1],rep('Venus',nrow(t1.venus.1)),
+                      t1.venus.1[,2:ncol(t1.venus.1)])
+  t1.earth.1 <- cbind(t1.earth.1[,1],rep('Earth',nrow(t1.earth.1)),
+                      t1.earth.1[,2:ncol(t1.earth.1)])
+  t1.mars.2 <- cbind(t1.mars.2[,1],rep('Mars',nrow(t1.mars.2)),
+                     t1.mars.2[,2:ncol(t1.mars.2)])
+  t1.virgo.2 <- cbind(t1.virgo.2[,1],rep('Virgo',nrow(t1.virgo.2)),
+                      t1.virgo.2[,2:ncol(t1.virgo.2)])
+  t1.hydra.2 <- cbind(t1.hydra.2[,1],rep('Hydra',nrow(t1.hydra.2)),
+                      t1.hydra.2[,2:ncol(t1.hydra.2)])
+  t1.aries.2 <- cbind(t1.aries.2[,1],rep('Aries',nrow(t1.aries.2)),
+                      t1.aries.2[,2:ncol(t1.aries.2)])
+  t1.io.2 <- cbind(t1.io.2[,1],rep('Io',nrow(t1.io.2)),
+                   t1.io.2[,2:ncol(t1.io.2)])
+  names(t1.pluto.1)[2] = "SP"
+  names(t1.titan.1)[2] = "SP"
+  names(t1.mars.1)[2] = "SP"
+  names(t1.venus.1)[2] = "SP"
+  names(t1.earth.1)[2] = "SP"
+  names(t1.mars.2)[2] = "SP"
+  names(t1.virgo.2)[2] = "SP"
+  names(t1.hydra.2)[2] = "SP"
+  names(t1.aries.2)[2] = "SP"
+  names(t1.io.2)[2] = "SP"
+  # Session 2
+  t2.ursa.1 <- cbind(t2.ursa.1[,1],rep('Ursa',nrow(t2.ursa.1)),
+                     t2.ursa.1[,2:ncol(t2.ursa.1)])
+  t2.sun.1 <- cbind(t2.sun.1[,1],rep('Sun',nrow(t2.sun.1)),
+                    t2.sun.1[,2:ncol(t2.sun.1)])
+  t2.pluto.1 <- cbind(t2.pluto.1[,1],rep('Pluto',nrow(t2.pluto.1)),
+                      t2.pluto.1[,2:ncol(t2.pluto.1)])
+  t2.draco.1 <- cbind(t2.draco.1[,1],rep('Draco',nrow(t2.draco.1)),
+                      t2.draco.1[,2:ncol(t2.draco.1)])
+  t2.titan.1 <- cbind(t2.titan.1[,1],rep('Titan',nrow(t2.titan.1)),
+                      t2.titan.1[,2:ncol(t2.titan.1)])
+  t2.leo.2 <- cbind(t2.leo.2[,1],rep('Leo',nrow(t2.leo.2)),
+                    t2.leo.2[,2:ncol(t2.leo.2)])
+  t2.orion.2 <- cbind(t2.orion.2[,1],rep('Orion',nrow(t2.orion.2)),
+                      t2.orion.2[,2:ncol(t2.orion.2)])
+  t2.libra.2 <- cbind(t2.libra.2[,1],rep('Libra',nrow(t2.libra.2)),
+                      t2.libra.2[,2:ncol(t2.libra.2)])
+  t2.ursa.2 <- cbind(t2.ursa.2[,1],rep('Ursa2',nrow(t2.ursa.2)),
+                     t2.ursa.2[,2:ncol(t2.ursa.2)])
+  t2.moon.2 <- cbind(t2.moon.2[,1],rep('Moon',nrow(t2.moon.2)),
+                     t2.moon.2[,2:ncol(t2.moon.2)])
+  names(t2.ursa.1)[2] = "SP"
+  names(t2.sun.1)[2] = "SP"
+  names(t2.pluto.1)[2] = "SP"
+  names(t2.draco.1)[2] = "SP"
+  names(t2.titan.1)[2] = "SP"
+  names(t2.leo.2)[2] = "SP"
+  names(t2.orion.2)[2] = "SP"
+  names(t2.libra.2)[2] = "SP"
+  names(t2.ursa.2)[2] = "SP"
+  names(t2.moon.2)[2] = "SP"
+  
+  # Session 3
+  # DAY 3 CHANGES
+  t3.ursa.1 <- cbind(t3.ursa.1[,1],rep('Ursa',nrow(t3.ursa.1)),
+                     t3.ursa.1[,2:ncol(t3.ursa.1)])
+  t3.sun.1 <- cbind(t3.sun.1[,1],rep('Sun',nrow(t3.sun.1)),
+                    t3.sun.1[,2:ncol(t3.sun.1)])
+  t3.mars.1 <- cbind(t3.mars.1[,1],rep('Mars',nrow(t3.mars.1)),
+                     t3.mars.1[,2:ncol(t3.mars.1)])
+  t3.draco.1 <- cbind(t3.draco.1[,1],rep('Draco',nrow(t3.draco.1)),
+                      t3.draco.1[,2:ncol(t3.draco.1)])
+  t3.dune.1 <- cbind(t3.dune.1[,1],rep('Dune',nrow(t3.dune.1)),
+                     t3.dune.1[,2:ncol(t3.dune.1)])
+  t3.sun.2 <- cbind(t3.sun.2[,1],rep('Sun2',nrow(t3.sun.2)),
+                    t3.sun.2[,2:ncol(t3.sun.2)])
+  t3.orion.2 <- cbind(t3.orion.2[,1],rep('Orion',nrow(t3.orion.2)),
+                      t3.orion.2[,2:ncol(t3.orion.2)])
+  t3.titan.2 <- cbind(t3.titan.2[,1],rep('Titan',nrow(t3.titan.2)),
+                      t3.titan.2[,2:ncol(t3.titan.2)])
+  t3.hoth.2 <- cbind(t3.hoth.2[,1],rep('Hoth',nrow(t3.hoth.2)),
+                     t3.hoth.2[,2:ncol(t3.hoth.2)])
+  t3.dune.2 <- cbind(t3.dune.2[,1],rep('Dune2',nrow(t3.dune.2)),
+                     t3.dune.2[,2:ncol(t3.dune.2)])
+  t3.cetus.3 <- cbind(t3.cetus.3[,1],rep('Cetus',nrow(t3.cetus.3)),
+                      t3.cetus.3[,2:ncol(t3.cetus.3)])
+  t3.lyra.3 <- cbind(t3.lyra.3[,1],rep('Lyra',nrow(t3.lyra.3)),
+                     t3.lyra.3[,2:ncol(t3.lyra.3)])
+  t3.canis.3 <- cbind(t3.canis.3[,1],rep('Canis',nrow(t3.canis.3)),
+                      t3.canis.3[,2:ncol(t3.canis.3)])
+  t3.ursa.3 <- cbind(t3.ursa.3[,1],rep('Ursa2',nrow(t3.ursa.3)),
+                     t3.ursa.3[,2:ncol(t3.ursa.3)])
+  t3.lepus.3 <- cbind(t3.lepus.3[,1],rep('Lepus',nrow(t3.lepus.3)),
+                      t3.lepus.3[,2:ncol(t3.lepus.3)])
+  
+  # DAY 3 CHANGES
+  names(t3.ursa.1)[2] = "SP"
+  names(t3.sun.1)[2] = "SP"
+  names(t3.mars.1)[2] = "SP"
+  names(t3.draco.1)[2] = "SP"
+  names(t3.dune.1)[2] = "SP"
+  names(t3.sun.2)[2] = "SP"
+  names(t3.orion.2)[2] = "SP"
+  names(t3.titan.2)[2] = "SP"
+  names(t3.hoth.2)[2] = "SP"
+  names(t3.dune.2)[2] = "SP"
+  names(t3.cetus.3)[2] = "SP"
+  names(t3.lyra.3)[2] = "SP"
+  names(t3.canis.3)[2] = "SP"
+  names(t3.ursa.3)[2] = "SP"
+  names(t3.lepus.3)[2] = "SP"
+  
+  ## BINDING DATA ###
+  # Session 1
+  # Bind
+  df1all <- rbind(t1.pluto.1,t1.titan.1,t1.mars.1,t1.venus.1,t1.earth.1,t1.mars.2,
+                  t1.virgo.2,t1.hydra.2,t1.aries.2,t1.io.2)
+  # Remove unnecessary columns
+  df1all = subset(df1all, select = -c(Notes,Bt_AI,Kt_AI,Bt_man,Kt_man))
+  # subset the gold standards and the subject measurements
+  df1golds <-subset(df1all, AI == 2)
+  df1all <-subset(df1all, AI != 2)
+  # Initialize full matrix
+  df1 = data.frame(matrix(ncol = 10, nrow = nrow(df1all)))
+  names(df1) <- c("Subject","SP","Session","Day","Group","Order","Exp_Group",
+                  "Volume","BFreeze","KFreeze")
+  # reorder
+  row.names(df1) <- 1:nrow(df1)
+  # Add data into new full matrix - adjust volume position based on exp group
+  df1[ ,1:7] <- df1all[ ,1:7]
+  df1[ ,9:10] <- df1all[ ,13:14]
+  for(n in 1:(nrow(df1))) {
+    if (df1[n,7] == 0){
+      df1[n,8] <- df1all[n,8]*df1all[n,9]*df1all[n,10]*0.52
+    }
+    if (df1[n,7] == 1){
+      df1[n,8] <- df1all[n,12]
+    }
+  }
+  
+  
+  # Session 2
+  # Bind
+  df2all <- rbind(t2.ursa.1,t2.sun.1,t2.pluto.1,t2.draco.1,t2.titan.1,t2.leo.2,
+                  t2.orion.2,t2.libra.2,t2.ursa.2,t2.moon.2)
+  # Remove unnecessary columns
+  df2all = subset(df2all, select = -c(Notes,Bt_AI,Kt_AI,Bt_man,Kt_man))
+  # subset the gold standards and the subject measurements
+  df2golds <-subset(df2all, AI == 2)
+  df2all <-subset(df2all, AI != 2)
+  # Initialize full matrix
+  df2 = data.frame(matrix(ncol = 10, nrow = nrow(df2all)))
+  names(df2) <- c("Subject","SP","Session","Day","Group","Order","Exp_Group",
+                  "Volume","BFreeze","KFreeze")
+  # reorder
+  row.names(df2) <- 1:nrow(df2)
+  # Add data into new full matrix - adjust volume position based on exp group
+  df2[ ,1:7] <- df2all[ ,1:7]
+  df2[ ,9:10] <- df2all[ ,13:14]
+  for(n in 1:(nrow(df2))) {
+    if (df2[n,7] == 0){
+      df2[n,8] <- df2all[n,8]*df2all[n,9]*df2all[n,10]*0.52
+    }
+    if (df2[n,7] == 1){
+      df2[n,8] <- df2all[n,12]
+    }
+  }
+  
+  # Session 3
+  # DAY 3 CHANGES
+  # Bind
+  df3all <- rbind(t3.ursa.1,t3.sun.1,t3.mars.1,t3.draco.1,t3.dune.1,t3.sun.2,
+                  t3.orion.2,t3.titan.2,t3.hoth.2,t3.dune.2,t3.cetus.3,t3.lyra.3,
+                  t3.canis.3,t3.ursa.3,t3.lepus.3)
+  # df3all <- rbind(t3.ursa.1,t3.sun.1,t3.mars.1,t3.draco.1,t3.dune.1,t3.sun.2,
+  #                 t3.orion.2,t3.titan.2,t3.hoth.2,t3.dune.2)
+  # Remove unnecessary columns
+  df3all = subset(df3all, select = -c(Notes,Bt_AI,Kt_AI,Bt_man,Kt_man))
+  # subset the gold standards and the subject measurements
+  df3golds <-subset(df3all, AI == 2)
+  df3all <-subset(df3all, AI != 2)
+  # Initialize full matrix
+  df3 = data.frame(matrix(ncol = 10, nrow = nrow(df3all)))
+  names(df3) <- c("Subject","SP","Session","Day","Group","Order","Exp_Group",
+                  "Volume","BFreeze","KFreeze")
+  # reorder
+  row.names(df3) <- 1:nrow(df3)
+  # Add data into new full matrix - adjust volume position based on exp group
+  df3[ ,1:7] <- df3all[ ,1:7]
+  df3[ ,9:10] <- df3all[ ,13:14]
+  for(n in 1:(nrow(df3))) {
+    if (df3[n,7] == 0){
+      df3[n,8] <- df3all[n,8]*df3all[n,9]*df3all[n,10]*0.52
+    }
+    if (df3[n,7] == 1){
+      df3[n,8] <- df3all[n,12]
+    }
+  }
+  
+  dfgolds = rbind(df1golds,df2golds,df3golds)
+  
+  # Clean golds
+  for(n in 1:(nrow(dfgolds))) {
+    dfgolds[n,11] <- dfgolds[n,8]*dfgolds[n,9]*dfgolds[n,10]*0.52
+  }
+  dfgolds = subset(dfgolds, select = -c(Participant,D1,D2,D3))
+  
+  # Remove excess variables
+  rm(list=setdiff(ls(),c("df1","dfgolds","df2","df3","dfWO")))
+  # Bind all
+  df = rbind(df1,df2,df3)
+  
+  # WRONG ORGAN CLEANING
+  # Pull subject name
+  dfWO$Subject <- str_extract_all(dfWO$Label, "[^.]+",simplify=TRUE)[ ,1]
+  # Capitalize subject name
+  dfWO$Subject <- gsub("(^|[[:space:]])([[:alpha:]])","\\1\\U\\2",dfWO$Subject,
+                       perl = TRUE)
+  # Pull SP name
+  dfWO$SP <- str_extract_all(dfWO$Label, "[^.]+",simplify=TRUE)[ ,2]
+  # Capitalize SP names
+  dfWO$SP <- gsub("(^|[[:space:]])([[:alpha:]])","\\1\\U\\2",dfWO$SP,
+                  perl = TRUE)
+  # Change timepoint column to match session
+  dfWO[dfWO == 'T1'] <- 1
+  dfWO[dfWO == 'T2'] <- 2
+  dfWO[dfWO == 'T3'] <- 3
+  # Make match column
+  dfWO$Match <- paste(dfWO$Subject,".",dfWO$SP,".",dfWO$Timepoint, sep = "")
+  
+  # WRONG ORGAN REMOVAL
+  # Make match column for df, but first remove 2 that occurs after some SP names
+  df$SP <- gsub("2*", "", df$SP)
+  df$Match <- paste(df$Subject,".",df$SP,".",df$Session, sep = "")
+  # Find if label from dfKall exists within dfKWO - if so, mark Wrong Organ column
+  df$Wrong_Organ <- df$Match %in% c(dfWO$Match)
+  # Tabulate results - should be 110 true
+  table(df$Wrong_Organ)
+  # Subset to remove wrong organs
+  dfWOrem <- subset(df,Wrong_Organ==FALSE)
+  # How many observations did this remove?
+  (nrow(dfWOrem)/nrow(df)*100)
 }
 
 
