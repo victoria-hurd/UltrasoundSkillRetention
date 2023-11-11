@@ -437,7 +437,6 @@ cleanBladder <- function() {
   # Remove unnecessary columns
   df1all = subset(df1all, select = -c(Notes,Bt_AI,Kt_AI,Bt_man,Kt_man))
   # subset the gold standards and the subject measurements
-  df1golds <-subset(df1all, AI == 2)
   df1all <-subset(df1all, AI != 2)
   # Initialize full matrix
   df1 = data.frame(matrix(ncol = 10, nrow = nrow(df1all)))
@@ -456,8 +455,6 @@ cleanBladder <- function() {
       df1[n,8] <- df1all[n,12]
     }
   }
-  
-  
   # Session 2
   # Bind
   df2all <- rbind(t2.ursa.1,t2.sun.1,t2.pluto.1,t2.draco.1,t2.titan.1,t2.leo.2,
@@ -465,7 +462,6 @@ cleanBladder <- function() {
   # Remove unnecessary columns
   df2all = subset(df2all, select = -c(Notes,Bt_AI,Kt_AI,Bt_man,Kt_man))
   # subset the gold standards and the subject measurements
-  df2golds <-subset(df2all, AI == 2)
   df2all <-subset(df2all, AI != 2)
   # Initialize full matrix
   df2 = data.frame(matrix(ncol = 10, nrow = nrow(df2all)))
@@ -484,7 +480,6 @@ cleanBladder <- function() {
       df2[n,8] <- df2all[n,12]
     }
   }
-  
   # Session 3
   # DAY 3 CHANGES
   # Bind
@@ -515,50 +510,34 @@ cleanBladder <- function() {
       df3[n,8] <- df3all[n,12]
     }
   }
-  
-  dfgolds = rbind(df1golds,df2golds,df3golds)
-  
-  # Clean golds
-  for(n in 1:(nrow(dfgolds))) {
-    dfgolds[n,11] <- dfgolds[n,8]*dfgolds[n,9]*dfgolds[n,10]*0.52
-  }
-  dfgolds = subset(dfgolds, select = -c(Participant,D1,D2,D3))
-  
-  # Remove excess variables
-  rm(list=setdiff(ls(),c("df1","dfgolds","df2","df3","dfWO")))
   # Bind all
-  df = rbind(df1,df2,df3)
-  
-  # WRONG ORGAN CLEANING
-  # Pull subject name
-  dfWO$Subject <- str_extract_all(dfWO$Label, "[^.]+",simplify=TRUE)[ ,1]
-  # Capitalize subject name
-  dfWO$Subject <- gsub("(^|[[:space:]])([[:alpha:]])","\\1\\U\\2",dfWO$Subject,
-                       perl = TRUE)
-  # Pull SP name
-  dfWO$SP <- str_extract_all(dfWO$Label, "[^.]+",simplify=TRUE)[ ,2]
-  # Capitalize SP names
-  dfWO$SP <- gsub("(^|[[:space:]])([[:alpha:]])","\\1\\U\\2",dfWO$SP,
-                  perl = TRUE)
-  # Change timepoint column to match session
-  dfWO[dfWO == 'T1'] <- 1
-  dfWO[dfWO == 'T2'] <- 2
-  dfWO[dfWO == 'T3'] <- 3
-  # Make match column
-  dfWO$Match <- paste(dfWO$Subject,".",dfWO$SP,".",dfWO$Timepoint, sep = "")
-  
-  # WRONG ORGAN REMOVAL
-  # Make match column for df, but first remove 2 that occurs after some SP names
-  df$SP <- gsub("2*", "", df$SP)
-  df$Match <- paste(df$Subject,".",df$SP,".",df$Session, sep = "")
-  # Find if label from dfKall exists within dfKWO - if so, mark Wrong Organ column
-  df$Wrong_Organ <- df$Match %in% c(dfWO$Match)
-  # Tabulate results - should be 110 true
-  table(df$Wrong_Organ)
-  # Subset to remove wrong organs
-  dfWOrem <- subset(df,Wrong_Organ==FALSE)
-  # How many observations did this remove?
-  (nrow(dfWOrem)/nrow(df)*100)
+  dfVols = rbind(df1,df2,df3)
+  # Make label column
+  # Change session to timepoint
+  dfVols$Session[dfVols$Session == 1] <- 'T1'
+  dfVols$Session[dfVols$Session == 2] <- 'T2'
+  dfVols$Session[dfVols$Session == 3] <- 'T3'
+  colnames(dfVols)[colnames(dfVols) == "Session"] ="Timepoint"
+  # Remove excess variables
+  rm(list=setdiff(ls(),c("df","dfVols")))
+  # Make match columns in dfVols - need to match volume data to quality data
+  # Remove 2 that occurs after some SP names
+  dfVols$SP <- gsub("2*", "", dfVols$SP)
+  dfVols$Match <- paste(dfVols$Subject,".",dfVols$SP,".",dfVols$Timepoint, sep = "")
+  df$Match <- paste(df$Subject,".",df$SP,".",df$Timepoint, sep = "")
+  # merge - only keeps observations from x that have a matching key in y
+  df <- merge(df, dfVols, by = "Match")
+  # Remove duplicates
+  df <- subset(df, select=-c(Match,Subject.y,SP.y,Timepoint.y,Exp_Group.y,
+                      KFreeze,BFreeze))
+  # Rename
+  names(df) <- c("Label","Exp_Group","Timepoint","Subject","SP","Quality",
+                      "Wrong_Organ","URL","Day","Group","Order","Volume")
+  # Reorder
+  df <- select(df,Label,Exp_Group,Timepoint,Subject,SP,Group,Order, Wrong_Organ,
+               Quality,Volume,URL)
+  # Done!
+  df
 }
 
 
