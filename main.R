@@ -28,6 +28,10 @@ dfSurveys = cleanSurveys()
 
 # ---------------------------------------------------------------
 # ORGAN ACQUISITION RATE ANALYSIS & VIZ
+orgAcqAgg(dfB)
+orgAcqT1(dfB)
+orgAcqT2(dfB)
+orgAcqT3(dfB)
 
 # ---------------------------------------------------------------
 # IMAGE QUALITY ANALYSIS & VIZ
