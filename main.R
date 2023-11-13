@@ -1,6 +1,6 @@
 # AUTHOR:       Victoria Hurd
 # DATE CREATED: 11/09/23
-# LAST EDITED:  11/09/23
+# LAST EDITED:  11/12/23
 # PROJECT:      POCUS Skill Retention Study
 # TASK:         Main script for cleaning, statistical analysis, and viz
 # ---------------------------------------------------------------
@@ -35,9 +35,12 @@ orgAcqT3(dfB)
 
 # ---------------------------------------------------------------
 # IMAGE QUALITY ANALYSIS & VIZ
+bladderQuality(dfB)
 
 # ---------------------------------------------------------------
 # DIAGNOSTICS ANALYSIS & VIZ
+diagnostics(dfB)
 
 # ---------------------------------------------------------------
 # SURVEYS ANALYSIS & VIZ
+
