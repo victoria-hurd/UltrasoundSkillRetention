@@ -18,6 +18,9 @@ library(ggplot2)
 library(dplyr)
 library(stringr)
 library(tidyverse)
+library(lme4)
+library(car)
+library(emmeans)
 
 # ---------------------------------------------------------------
 # CLEANING SCRIPT
@@ -27,14 +30,14 @@ dfK = cleanKidney()
 dfSurveys = cleanSurveys()
 
 # ---------------------------------------------------------------
-# ORGAN ACQUISITION RATE ANALYSIS & VIZ
+# ORGAN ACQUISITION RATE ANALYSIS
 orgAcqAgg(dfB)
 orgAcqT1(dfB)
 orgAcqT2(dfB)
 orgAcqT3(dfB)
 
 # ---------------------------------------------------------------
-# IMAGE QUALITY ANALYSIS & VIZ
+# IMAGE QUALITY ANALYSIS
 bladderQuality(dfB)
 
 # ---------------------------------------------------------------

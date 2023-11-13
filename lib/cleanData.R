@@ -534,8 +534,8 @@ cleanBladder <- function() {
   names(df) <- c("Label","Exp_Group","Timepoint","Subject","SP","Quality",
                       "Wrong_Organ","URL","Day","Group","Order","Volume")
   # Reorder
-  df <- select(df,Label,Exp_Group,Timepoint,Subject,SP,Group,Order, Wrong_Organ,
-               Quality,Volume,URL)
+  df <- select(df,Label,Exp_Group,Timepoint,Subject,SP,Day,Group,Order,
+               Wrong_Organ,Quality,Volume,URL)
   # Done!
   df
 }
