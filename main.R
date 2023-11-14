@@ -30,6 +30,9 @@ dfK = cleanKidney()
 dfSurveys = cleanSurveys()
 
 # ---------------------------------------------------------------
+# DEMOGRAPHICS
+
+# ---------------------------------------------------------------
 # ORGAN ACQUISITION RATE ANALYSIS
 orgAcqAgg(dfB)
 orgAcqT1(dfB)

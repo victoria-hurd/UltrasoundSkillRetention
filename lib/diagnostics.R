@@ -20,24 +20,24 @@ diagnostics <- function(dfB) {
   # Calculate mean per group
   # For each SP, session, and group, volume needs averaged and subtracted
   # For wrong organs
-  df_listWO <- dfWOrem %>%
+  df_listWO <- dfWOIQrem %>%
     group_by(SP,Timepoint,Day, Group) %>%
     mutate(meanVol = (mean(Volume))) %>%
     mutate(volVar = (Volume - mean(Volume))) %>%
     group_split()
-  vars = names(dfWOrem)
-  dfWOrem = data.frame(matrix(ncol = ncol(dfWOrem)+2, nrow = nrow(dfWOrem)))
-  names(dfWOrem) <- c(vars, "meanVol","volVar")
+  vars = names(dfWOIQrem)
+  dfWOIQrem = data.frame(matrix(ncol = ncol(dfWOIQrem)+2, nrow = nrow(dfWOIQrem)))
+  names(dfWOIQrem) <- c(vars, "meanVol","volVar")
   i=1
   for (n in 1:(length(df_listWO))) {
     rowNum = nrow(as.data.frame(df_listWO[[n]]))
-    dfWOrem[i:(i+rowNum-1), ] <- as.data.frame(df_listWO[[n]])
+    dfWOIQrem[i:(i+rowNum-1), ] <- as.data.frame(df_listWO[[n]])
     i = i+rowNum
   }
   # Remove volumes below 100mL
-  nOrig = nrow(dfWOrem)
-  dfFull_noWO <- subset(dfWOrem,meanVol > 100)
-  dfEmpty <- subset(dfWOrem,meanVol < 100)
+  nOrig = nrow(dfWOIQrem)
+  dfFull_noWO <- subset(dfWOIQrem,meanVol > 100)
+  dfEmpty <- subset(dfWOIQrem,meanVol < 100)
   nAfter = nrow(dfFull_noWO)
   print(nOrig)
   print(nAfter)
@@ -55,6 +55,8 @@ diagnostics <- function(dfB) {
   table(dfClean$Timepoint)
   dfClean$Timepoint <- as.factor(dfClean$Timepoint)
   dfClean$Exp_Group <- as.factor(dfClean$Exp_Group)
+  # AGGREGATED:
+  leveneTest(volVar ~ Exp_Group,data = dfClean)
   # COMBO 1: If experimental groups differ at T1
   dfT1 <- subset(dfClean,Timepoint=='T1')
   table(dfT1$Exp_Group)
@@ -113,4 +115,30 @@ diagnostics <- function(dfB) {
                                           linetype = 2),
           axis.text.x = element_text(size=14)) 
   
+  ggplot(dfClean) + 
+    geom_violin(aes(x=Exp_Group,y = volVar,fill=Exp_Group),position = dodge) + 
+    labs(x="Experimental Group",
+         y="Bladder Volume Variance [mL]",
+         title="Bladder Volume Variance",
+         fill="Experimental Group:") + 
+    #scale_fill_manual(
+      #values = c("red", "darkblue"),
+      #labels=c('Manual', 'AI Assistance')) +
+    ylim(-400,400) + 
+    #scale_x_discrete(labels=c('Manual'='Manual','AI'='AI Assistance')) +
+    theme(plot.title = element_text(size = 20,hjust = 0.5,face = "bold"),
+          axis.title = element_text(size = 18),
+          legend.title = element_text(size = 16),
+          legend.text = element_text(size = 16),
+          axis.text = element_text(size = 14),
+          panel.background = element_blank(),
+          panel.border = element_rect(color = "black",
+                                      fill = NA,
+                                      linewidth = 1),
+          legend.position="bottom", 
+          legend.box = "horizontal",
+          panel.grid.major = element_line(color = "grey",
+                                          linewidth = 0.25,
+                                          linetype = 2),
+          axis.text.x = element_text(size=14)) 
 }
